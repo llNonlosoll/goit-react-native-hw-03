@@ -34,8 +34,8 @@ export const LoginScreen = () => {
           style={[
             styles.formWrapper,
             {
-              paddingBottom: isKeyboardVisible ? 10 : 111,
-              height: isKeyboardVisible ? 250 : "auto",
+              paddingBottom: isKeyboardVisible ? 32 : 111,
+              height: isKeyboardVisible ? 248 : "auto",
             },
           ]}
         >
@@ -43,6 +43,7 @@ export const LoginScreen = () => {
           <TextInput
             style={[styles.commonText, styles.input]}
             placeholder="Адреса електронної пошти"
+            textContentType="emailAddress"
             value={email}
             onChangeText={setEmail}
             onFocus={() => setIsKeyboardVisible(true)}

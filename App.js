@@ -29,8 +29,8 @@ export default function App() {
           resizeMode="cover"
           style={styles.backgroundImg}
         >
-          <LoginScreen />
-          {/* <RegistrationScreen /> */}
+          {/* <LoginScreen /> */}
+          <RegistrationScreen />
         </ImageBackground>
         <StatusBar style="auto" />
       </View>

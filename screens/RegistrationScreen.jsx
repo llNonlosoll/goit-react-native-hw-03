@@ -1,46 +1,106 @@
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 
 export const RegistrationScreen = () => {
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const handleSubmit = () => {
+    console.log({ login, email, password });
+    setLogin("");
+    setEmail("");
+    setPassword("");
+  };
+
+  const togglePassword = () => {
+    setIsPasswordHidden(!isPasswordHidden);
+  };
+
   return (
-    <View style={{ flex: 1, justifyContent: "flex-end" }}>
-      <View style={styles.formWrapper}>
-        <View style={styles.userPhoto}>
-          <TouchableOpacity style={styles.addPhoto}>
-            <Text style={styles.addPhotoButton}>+</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.title}>Реєстрація</Text>
-        <TextInput
-          style={[styles.commonText, styles.input]}
-          placeholder="Логін"
-        ></TextInput>
-        <TextInput
-          style={[styles.commonText, styles.input]}
-          placeholder="Адреса електронної пошти"
-        ></TextInput>
-        <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+        <View
+          style={[
+            styles.formWrapper,
+            {
+              paddingBottom: isKeyboardVisible ? 32 : 78,
+              height: isKeyboardVisible ? 374 : "auto",
+            },
+          ]}
+        >
+          <View style={styles.userPhoto}>
+            <TouchableOpacity style={styles.addPhoto}>
+              <Text style={styles.addPhotoButton}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.title}>Реєстрація</Text>
           <TextInput
             style={[styles.commonText, styles.input]}
-            placeholder="Пароль"
-            textContentType="password"
-          />
+            placeholder="Логін"
+            textContentType="username"
+            value={login}
+            onChangeText={setLogin}
+            onFocus={() => setIsKeyboardVisible(true)}
+            onBlur={() => setIsKeyboardVisible(false)}
+          ></TextInput>
+          <TextInput
+            style={[styles.commonText, styles.input]}
+            placeholder="Адреса електронної пошти"
+            textContentType="emailAddress"
+            value={email}
+            onChangeText={setEmail}
+            onFocus={() => setIsKeyboardVisible(true)}
+            onBlur={() => setIsKeyboardVisible(false)}
+          ></TextInput>
+          <View>
+            <TextInput
+              style={[styles.commonText, styles.input]}
+              placeholder="Пароль"
+              textContentType="password"
+              value={password}
+              onChangeText={setPassword}
+              onFocus={() => setIsKeyboardVisible(true)}
+              onBlur={() => setIsKeyboardVisible(false)}
+              secureTextEntry={isPasswordHidden}
+            />
+            <TouchableOpacity
+              style={styles.showPasswordButton}
+              onPress={togglePassword}
+            >
+              {password !== "" && (
+                <Text>{isPasswordHidden ? "Показати" : "Сховати"}</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.button}>
+            <Text
+              style={[styles.commonText, styles.buttonText]}
+              onPress={handleSubmit}
+            >
+              Зареєстуватися
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={[styles.commonText, styles.loginLink]}>
+              Вже є акаунт? Увійти
+            </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={[styles.commonText, styles.buttonText]}>
-            Зареєстуватися
-          </Text>
-        </TouchableOpacity>
-        <Text style={[styles.commonText, styles.loginLink]}>
-          Вже є акаунт? Увійти
-        </Text>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
@@ -125,6 +185,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderRadius: 10,
+  },
+
+  showPasswordButton: {
+    position: "absolute",
+    top: 16,
+    right: 16,
   },
 
   button: {
